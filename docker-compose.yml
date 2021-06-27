@@ -14,16 +14,21 @@ services:
             - mysql
     mysql:
         image: 'mysql:8.0'
+        container_name: mysql
         ports:
             - '3336:3306'
         environment:
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
             MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
             MYSQL_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        volumes:
+            - 'laravelmysql:/var/lib/mysql'
         networks:
             - laravel
 networks:
     laravel:
         driver: bridge
+volumes:
+    laravelmysql:
+        driver: local

@@ -2,4 +2,6 @@
 
 composer install
 
+php artisan migrate --path=app/Infrastructure/Migrations
+
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
