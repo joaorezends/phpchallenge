@@ -2,11 +2,7 @@
 
 namespace App\Domain\People\Interfaces\Services;
 
-interface PersonService
-{
-    /**
-     * @param  array $attributes
-     * @return bool
-     */
-    public function validate(array $attributes): bool;
-}
+use App\Domain\Interfaces\Service;
+
+interface PersonService extends Service
+{ }

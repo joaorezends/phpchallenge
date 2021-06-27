@@ -2,6 +2,7 @@
 
 namespace App\Presentation\Web\Http;
 
+use App\Domain\People\Jobs\StorePeopleFromFileJob;
 use App\Domain\People\Rules\ValidPeopleXML;
 use App\Presentation\Core\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -20,7 +21,9 @@ class UploadedFilesController extends Controller
         ], [], [
             "people" => "pessoas",
         ]);
+
+        StorePeopleFromFileJob::dispatch($request->file("people")->get());
         
-        dd("Passou");
+        return back()->with("succes", "Upload realizado com sucesso.");
     }
 }

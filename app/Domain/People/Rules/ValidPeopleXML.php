@@ -4,6 +4,7 @@ namespace App\Domain\People\Rules;
 
 use App\Domain\People\Interfaces\Services\UploadedFileService;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Http\UploadedFile;
 
 class ValidPeopleXML implements Rule
 {
@@ -31,7 +32,11 @@ class ValidPeopleXML implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->uploadedFileService->validate($value);
+        if (! $value instanceof UploadedFile) {
+            return false;
+        }
+
+        return $this->uploadedFileService->validate($value->get());
     }
 
     /**

@@ -2,13 +2,17 @@
 
 namespace App\Domain\People\Interfaces\Services;
 
-use Illuminate\Http\UploadedFile;
-
 interface UploadedFileService
 {
     /**
-     * @param  \Illuminate\Http\UploadedFile $uploadedFile
+     * @param  string $contents
      * @return bool
      */
-    public function validate(UploadedFile $uploadedFile): bool;
+    public function validate(string $contents): bool;
+
+    /**
+     * @param  string $contents
+     * @return void
+     */
+    public function store($contents): void;
 }

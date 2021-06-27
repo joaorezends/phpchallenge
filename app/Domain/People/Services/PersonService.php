@@ -2,24 +2,69 @@
 
 namespace App\Domain\People\Services;
 
+use App\Domain\Abstracts\Service;
+use App\Domain\People\Entities\Person;
+use App\Domain\People\Interfaces\Repositories\PersonRepository;
+use App\Domain\People\Interfaces\Repositories\PhoneRepository;
 use App\Domain\People\Interfaces\Services\PersonService as IPersonService;
-use Illuminate\Support\Facades\Validator;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
-class PersonService implements IPersonService
+class PersonService extends Service implements IPersonService
 {
     /**
-     * @param  array $attributes
-     * @return bool
+     * @var array
      */
-    public function validate(array $attributes): bool
-    {
-        $validator = Validator::make($attributes, [
-            "id" => "required|integer|min:1",
-            "name" => "required|max:191",
-            "phones" => "required|array|min:1",
-            "phones.*.number" => "required|size:7",
-        ]);
+    protected $rules = [
+        "id" => "required|integer|min:1",
+        "name" => "required|max:191",
+        "phones" => "required|array|min:1",
+        "phones.*.number" => "required|size:7",
+    ];
 
-        return ! $validator->fails();
+    /**
+     * @var PhoneRepository
+     */
+    private $phoneRepository;
+
+    /**
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->phoneRepository = app()->make(PhoneRepository::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRepositoryClass(): string
+    {
+        return PersonRepository::class;
+    }
+
+    /**
+     * @param  array $attributes
+     * @return Person
+     */
+    public function store(array $attributes): Person
+    {
+        try {
+            DB::beginTransaction();
+
+            $person = parent::store($attributes);
+
+            foreach ($attributes["phones"] as $phone) {
+                $this->phoneRepository->store($phone + ["person_id" => $person->id]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        }
+
+        return $person;
     }
 }

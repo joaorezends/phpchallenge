@@ -4,9 +4,9 @@ namespace App\Domain\People\Services;
 
 use App\Domain\People\Interfaces\Services\PersonService;
 use App\Domain\People\Interfaces\Services\UploadedFileService as IUploadedFileService;
+use App\Domain\People\Jobs\StorePersonJob;
 use App\Support\Xml;
 use Exception;
-use Illuminate\Http\UploadedFile;
 
 class UploadedFileService implements IUploadedFileService
 {
@@ -19,15 +19,13 @@ class UploadedFileService implements IUploadedFileService
     }
 
     /**
-     * @param  \Illuminate\Http\UploadedFile $uploadedFile
+     * @param  string $contents
      * @return bool
      */
-    public function validate(UploadedFile $uploadedFile): bool
+    public function validate(string $contents): bool
     {
         try {
-            $xml = simplexml_load_file($uploadedFile->getRealPath());
-            $people = (new Xml($xml))->toArray();
-            $this->normalize($people);
+            $people = $this->parse($contents);
 
             foreach ($people as $person) {
                 if (! $this->personService->validate($person)) {
@@ -42,11 +40,28 @@ class UploadedFileService implements IUploadedFileService
     }
 
     /**
-     * @param  array $people
+     * @param  string $contents
      * @return void
      */
-    private function normalize(&$people): void
+    public function store($contents): void
     {
+        if ($this->validate($contents)) {
+            $people = $this->parse($contents);
+            
+            foreach ($people as $person) {
+                StorePersonJob::dispatch($person);
+            }
+        }
+    }
+
+    /**
+     * @param  string $contents
+     * @return array
+     */
+    private function parse($contents): array
+    {
+        $xml = simplexml_load_string($contents);
+        $people = (new Xml($xml))->toArray();
         $people = $people["person"];
 
         $people = array_map(function ($person) {
@@ -64,5 +79,7 @@ class UploadedFileService implements IUploadedFileService
 
             return $return;
         }, $people);
+
+        return $people;
     }
 }
