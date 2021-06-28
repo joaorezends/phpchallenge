@@ -16,7 +16,7 @@ class PersonService extends Service implements IPersonService
      * @var array
      */
     protected $rules = [
-        "id" => "required|integer|min:1",
+        "id" => "nullable|integer|min:1",
         "name" => "required|max:191",
         "phones" => "required|array|min:1",
         "phones.*.number" => "required|size:7",

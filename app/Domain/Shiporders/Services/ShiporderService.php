@@ -17,7 +17,7 @@ class ShiporderService extends Service implements IShiporderService
      * @var array
      */
     protected $rules = [
-        "id" => "required|integer|min:1",
+        "id" => "nullable|integer|min:1",
         "person_id" => "required|integer|min:1",
         "items" => "required|array|min:1",
         "items.*.title" => "required|max:191",

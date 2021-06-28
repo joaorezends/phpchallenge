@@ -3,11 +3,15 @@
 namespace App\Domain\People\Entities;
 
 use App\Domain\Shiporders\Entities\Shiporder;
+use App\Infrastructure\Factories\People\PersonFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Person extends Model
 {
+    use HasFactory;
+
     /**
      * The table associated with the model.
      *
@@ -32,6 +36,16 @@ class Person extends Model
     protected $with = [
         "phones"
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return PersonFactory::new();
+    }
 
     /**
      * Get all of the phones for the Person

@@ -4,6 +4,7 @@ namespace App\Domain\Abstracts;
 
 use App\Domain\Interfaces\Repository;
 use App\Domain\Interfaces\Service as IService;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
@@ -62,6 +63,10 @@ abstract class Service implements IService
      */
     public function store(array $attributes): Model
     {
+        if (! $this->validate($attributes)) {
+            throw new Exception;
+        }
+
         return $this->repository->store($attributes);
     }
 }
