@@ -4,6 +4,7 @@ namespace App\Domain\Abstracts;
 
 use App\Domain\Interfaces\Repository;
 use App\Domain\Interfaces\Service as IService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
@@ -40,6 +41,23 @@ abstract class Service implements IService
         $validator = Validator::make($attributes, $this->rules);
 
         return ! $validator->fails();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function all(): Collection
+    {
+        return $this->repository->all();
+    }
+
+    /**
+     * @param  int $id
+     * @return Model
+     */
+    public function find(int $id): Model
+    {
+        return $this->repository->find($id);
     }
 
     /**

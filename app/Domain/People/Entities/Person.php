@@ -24,6 +24,15 @@ class Person extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = [
+        "phones"
+    ];
+
+    /**
      * Get all of the phones for the Person
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
