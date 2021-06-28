@@ -4,6 +4,7 @@ namespace App\Presentation\Api\Http;
 
 use App\Domain\Interfaces\Service;
 use App\Presentation\Core\Http\Controllers\Controller as BaseController;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,10 +43,14 @@ abstract class Controller extends BaseController
      */
     public function index()
     {
-        $objects = $this->service->all();
-        $this->putIndexLinks($objects);
+        try {
+            $objects = $this->service->all();
+            $this->putIndexLinks($objects);
 
-        return $this->json($objects);
+            return $this->json($objects);
+        } catch (Exception $e) {
+            return $this->badRequest("Não foi possível listar.");
+        }
     }
 
     /**
@@ -53,13 +58,17 @@ abstract class Controller extends BaseController
      */
     public function show($id)
     {
-        $object = $this->service->find($id);
+        try {
+            $object = $this->service->find($id);
         
-        if ($object instanceof Model) {
-            $this->putShowLinks($object);
-        }
+            if ($object instanceof Model) {
+                $this->putShowLinks($object);
+            }
 
-        return $this->json($object);
+            return $this->json($object);
+        } catch (Exception $e) {
+            return $this->badRequest("Não foi possível buscar.");
+        }
     }
 
     /**
@@ -73,6 +82,18 @@ abstract class Controller extends BaseController
     protected function json($data, $status = 200, array $headers = [])
     {
         return response()->json($data, $status, $headers);
+    }
+
+    /**
+     * Create a new 400 response from the application.
+     *
+     * @param  string  $content
+     * @param  array  $headers
+     * @return \Illuminate\Http\Response
+     */
+    protected function badRequest($content = "", array $headers = [])
+    {
+        return response($content, 400, $headers);
     }
 
     /**
