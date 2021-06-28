@@ -19,6 +19,11 @@ class ShiporderService extends Service implements IShiporderService
     protected $rules = [
         "id" => "nullable|integer|min:1",
         "person_id" => "required|integer|min:1",
+        "shipto" => "required|array|min:1",
+        "shipto.name" => "required|max:191",
+        "shipto.address" => "required|max:191",
+        "shipto.city" => "required|max:191",
+        "shipto.country" => "required|max:191",
         "items" => "required|array|min:1",
         "items.*.title" => "required|max:191",
         "items.*.note" => "required",

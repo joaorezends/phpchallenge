@@ -3,6 +3,8 @@
 namespace App\Domain\Shiporders\Entities;
 
 use App\Domain\People\Entities\Person;
+use App\Infrastructure\Factories\Shiporders\ShiporderFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Shiporder extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -27,6 +31,16 @@ class Shiporder extends Model
     protected $with = [
         "shipto", "items"
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return ShiporderFactory::new();
+    }
 
     /**
      * Get the person that owns the Shiporder
