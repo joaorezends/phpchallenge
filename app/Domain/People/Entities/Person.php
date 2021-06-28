@@ -2,6 +2,7 @@
 
 namespace App\Domain\People\Entities;
 
+use App\Domain\Shiporders\Entities\Shiporder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -40,5 +41,15 @@ class Person extends Model
     public function phones(): HasMany
     {
         return $this->hasMany(Phone::class);
+    }
+
+    /**
+     * Get all of the shiporders for the Person
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function shiporders(): HasMany
+    {
+        return $this->hasMany(Shiporder::class);
     }
 }
