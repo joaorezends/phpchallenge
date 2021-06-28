@@ -35,9 +35,9 @@ abstract class Repository implements IRepository
 
     /**
      * @param  int $id
-     * @return Model
+     * @return Model|null
      */
-    public function find(int $id): Model
+    public function find(int $id)
     {
         return $this->model->find($id);
     }

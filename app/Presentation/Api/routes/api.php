@@ -1,6 +1,7 @@
 <?php
 
 use App\Presentation\Api\Http\PeopleController;
+use App\Presentation\Api\Http\ShipordersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource("people", PeopleController::class)->only("index", "show");
+
+Route::apiResource("shiporders", ShipordersController::class)->only("index", "show");

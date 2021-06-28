@@ -25,7 +25,7 @@ class Shiporder extends Model
      * @var array
      */
     protected $with = [
-        "items"
+        "shipto", "items"
     ];
 
     /**

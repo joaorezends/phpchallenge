@@ -24,6 +24,15 @@ class Item extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        "price" => "float",
+    ];
+
+    /**
      * Get the shiporder that owns the Item
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

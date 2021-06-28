@@ -53,9 +53,9 @@ abstract class Service implements IService
 
     /**
      * @param  int $id
-     * @return Model
+     * @return Model|null
      */
-    public function find(int $id): Model
+    public function find(int $id)
     {
         return $this->repository->find($id);
     }

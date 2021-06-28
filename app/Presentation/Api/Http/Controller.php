@@ -61,9 +61,11 @@ abstract class Controller extends BaseController
         try {
             $object = $this->service->find($id);
         
-            if ($object instanceof Model) {
-                $this->putShowLinks($object);
+            if (! $object instanceof Model) {
+                throw new Exception;
             }
+            
+            $this->putShowLinks($object);
 
             return $this->json($object);
         } catch (Exception $e) {
