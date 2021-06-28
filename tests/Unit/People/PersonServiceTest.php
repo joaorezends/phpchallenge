@@ -8,6 +8,7 @@ use App\Domain\People\Services\PersonService;
 use App\Infrastructure\Repositories\People\PersonRepository;
 use App\Infrastructure\Repositories\People\PhoneRepository;
 use Tests\TestCase;
+use Illuminate\Support\Str;
 
 class PersonServiceTest extends TestCase
 {
@@ -30,10 +31,49 @@ class PersonServiceTest extends TestCase
     }
 
     /** @test */
+    public function id_field_is_integer()
+    {
+        $isValid = $this->getService()->validate([
+            "id" => "string",
+            "name" => "Complete Name",
+            "phones" => [
+                [
+                    "number" => 1234567
+                ],
+            ]
+        ]);
+        $this->assertFalse($isValid);
+    }
+
+    /** @test */
+    public function id_field_min_1()
+    {
+        $isValid = $this->getService()->validate([
+            "id" => -1,
+            "name" => "Complete Name",
+            "phones" => [
+                [
+                    "number" => 1234567
+                ],
+            ]
+        ]);
+        $this->assertFalse($isValid);
+    }
+    
+    /** @test */
     public function name_field_is_required()
     {
         $attributes = $this->getPerson();
         $attributes["name"] = null;
+        $isValid = $this->getService()->validate($attributes);
+        $this->assertFalse($isValid);
+    }
+
+    /** @test */
+    public function name_field_max_191()
+    {
+        $attributes = $this->getPerson();
+        $attributes["name"] = Str::random(192);
         $isValid = $this->getService()->validate($attributes);
         $this->assertFalse($isValid);
     }
@@ -52,6 +92,15 @@ class PersonServiceTest extends TestCase
     {
         $attributes = $this->getPerson();
         $attributes["phones"][0]["number"] = null;
+        $isValid = $this->getService()->validate($attributes);
+        $this->assertFalse($isValid);
+    }
+
+    /** @test */
+    public function phone_number_field_size_seven()
+    {
+        $attributes = $this->getPerson();
+        $attributes["phones"][0]["number"] = 12345678;
         $isValid = $this->getService()->validate($attributes);
         $this->assertFalse($isValid);
     }
