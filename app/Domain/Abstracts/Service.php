@@ -23,14 +23,10 @@ abstract class Service implements IService
     /**
      * @return void
      */
-    public function __construct() {
-        $this->repository = app()->make($this->getRepositoryClass());
+    public function __construct(Repository $repository)
+    {
+        $this->repository = $repository;
     }
-
-    /**
-     * @return string
-     */
-    abstract public function getRepositoryClass(): string;
 
     /**
      * @param  array $attributes

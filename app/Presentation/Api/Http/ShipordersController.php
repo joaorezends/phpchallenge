@@ -7,11 +7,11 @@ use App\Domain\Shiporders\Interfaces\Services\ShiporderService;
 class ShipordersController extends Controller
 {
     /**
-     * @return string
+     * @param ShiporderService $shiporderService
      */
-    public function getServiceClass(): string
+    public function __construct(ShiporderService $shiporderService)
     {
-        return ShiporderService::class;
+        parent::__construct($shiporderService);
     }
 
     /**

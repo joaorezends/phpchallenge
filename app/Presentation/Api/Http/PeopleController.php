@@ -7,11 +7,11 @@ use App\Domain\People\Interfaces\Services\PersonService;
 class PeopleController extends Controller
 {
     /**
-     * @return string
+     * @param PersonService $personService
      */
-    public function getServiceClass(): string
+    public function __construct(PersonService $personService)
     {
-        return PersonService::class;
+        parent::__construct($personService);
     }
 
     /**

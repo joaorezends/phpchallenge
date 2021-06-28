@@ -23,15 +23,11 @@ abstract class Controller extends BaseController
     /**
      * @return void
      */
-    public function __construct() {
-        $this->service = app()->make($this->getServiceClass());
+    public function __construct(Service $service) 
+    {
+        $this->service = $service;
         $this->path = $this->getPath();
     }
-
-    /**
-     * @return string
-     */
-    abstract public function getServiceClass(): string;
 
     /**
      * @return string

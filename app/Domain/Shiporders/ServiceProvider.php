@@ -51,11 +51,13 @@ class ServiceProvider extends BaseServiceProvider
     public function bindServices(): void
     {
         $this->app->bind(IShiporderService::class, function () {
-            return new ShiporderService;
+            return new ShiporderService(new ShiporderRepository, new ShiptoRepository, new ItemRepository);
         });
 
         $this->app->bind(IUploadedFileService::class, function () {
-            return new UploadedFileService;
+            return new UploadedFileService(new ShiporderService(
+                new ShiporderRepository, new ShiptoRepository, new ItemRepository
+            ));
         });
     }
 }

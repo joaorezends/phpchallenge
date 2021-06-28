@@ -30,18 +30,10 @@ class PersonService extends Service implements IPersonService
     /**
      * @return void
      */
-    public function __construct()
+    public function __construct(PersonRepository $personRepository, PhoneRepository $phoneRepository)
     {
-        parent::__construct();
-        $this->phoneRepository = app()->make(PhoneRepository::class);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRepositoryClass(): string
-    {
-        return PersonRepository::class;
+        parent::__construct($personRepository);
+        $this->phoneRepository = $phoneRepository;
     }
 
     /**

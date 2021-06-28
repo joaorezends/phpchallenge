@@ -45,11 +45,13 @@ class ServiceProvider extends BaseServiceProvider
     public function bindServices(): void
     {
         $this->app->bind(IPersonService::class, function () {
-            return new PersonService;
+            return new PersonService(new PersonRepository, new PhoneRepository);
         });
 
         $this->app->bind(IUploadedFileService::class, function () {
-            return new UploadedFileService;
+            return new UploadedFileService(new PersonService(
+                new PersonRepository, new PhoneRepository
+            ));
         });
     }
 }

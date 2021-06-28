@@ -16,8 +16,10 @@ abstract class Repository implements IRepository
     /**
      * @return void
      */
-    public function __construct() {
-        $this->model = app()->make($this->getModelClass());
+    public function __construct()
+    {
+        $model = $this->getModelClass();
+        $this->model = new $model;
     }
 
     /**

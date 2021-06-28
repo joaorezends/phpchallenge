@@ -39,19 +39,11 @@ class ShiporderService extends Service implements IShiporderService
     /**
      * @return void
      */
-    public function __construct()
+    public function __construct(ShiporderRepository $shiporderRepository, ShiptoRepository $shiptoRepository, ItemRepository $itemRepository)
     {
-        parent::__construct();
-        $this->shiptoRepository = app()->make(ShiptoRepository::class);
-        $this->itemRepository = app()->make(ItemRepository::class);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRepositoryClass(): string
-    {
-        return ShiporderRepository::class;
+        parent::__construct($shiporderRepository);
+        $this->shiptoRepository = $shiptoRepository;
+        $this->itemRepository = $itemRepository;
     }
 
     /**

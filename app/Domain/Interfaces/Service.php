@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 interface Service
 {
     /**
-     * @return string
-     */
-    public function getRepositoryClass(): string;
-
-    /**
      * @param  array $attributes
      * @return bool
      */

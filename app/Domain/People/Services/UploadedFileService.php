@@ -13,9 +13,9 @@ class UploadedFileService implements IUploadedFileService
     /**
      * @return void
      */
-    public function __construct()
+    public function __construct(PersonService $personService)
     {
-        $this->personService = app()->make(PersonService::class);
+        $this->personService = $personService;
     }
 
     /**
