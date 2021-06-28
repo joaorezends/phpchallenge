@@ -19,6 +19,9 @@ Open the terminal of your preference
 ### Set up docker image
     docker-compose up --build
 
+### Tcharamm!
+You now have access by [http://localhost:8000/](http://localhost:8000/)
+
 ## Tests
 Open the terminal of your preference
 
