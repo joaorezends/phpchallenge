@@ -29,6 +29,6 @@ class UploadedFilesController extends Controller
         StorePeopleFromFileJob::dispatch($request->file("people")->get());
         StoreShipordersFromFileJob::dispatch($request->file("shiporders")->get());
         
-        return back()->with("succes", "Upload realizado com sucesso.");
+        return back()->with("success", "Upload realizado com sucesso.");
     }
 }
