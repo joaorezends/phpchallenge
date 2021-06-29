@@ -35,7 +35,7 @@ abstract class Controller extends BaseController
     abstract public function getPath(): string;
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -50,7 +50,7 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -58,7 +58,7 @@ abstract class Controller extends BaseController
             $object = $this->service->find($id);
         
             if (! $object instanceof Model) {
-                throw new Exception;
+                return $this->resourceNotFound();
             }
             
             $this->putShowLinks($object);
@@ -92,6 +92,18 @@ abstract class Controller extends BaseController
     protected function badRequest($content = "", array $headers = [])
     {
         return response($content, 400, $headers);
+    }
+
+    /**
+     * Create a new 404 response from the application.
+     *
+     * @param  string  $content
+     * @param  array  $headers
+     * @return \Illuminate\Http\Response
+     */
+    protected function resourceNotFound($content = "", array $headers = [])
+    {
+        return response($content, 404, $headers);
     }
 
     /**
